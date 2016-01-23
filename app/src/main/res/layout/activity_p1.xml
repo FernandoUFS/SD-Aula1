@@ -55,7 +55,7 @@
             android:text="127.0.0.1" />
 
         <EditText
-            android:id="@+id/edtPorta"
+            android:id="@+id/edtPort"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="5000"

@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.cumbetech.sd_aula1.Objects.Mensagem;
+import com.cumbetech.sd_aula1.Objects.Message;
 import com.cumbetech.sd_aula1.R;
 
 import java.util.ArrayList;
@@ -15,23 +15,23 @@ import java.util.ArrayList;
 /**
  * Created by Fernando on 23/01/2016.
  */
-public class MensagemAdapter extends BaseAdapter {
+public class MessageAdapter extends BaseAdapter {
     private Context ctx;
-    private ArrayList<Mensagem> mensagens;
+    private ArrayList<Message> messages;
 
-    public MensagemAdapter(Context ctx, ArrayList<Mensagem> mensagens) {
+    public MessageAdapter(Context ctx, ArrayList<Message> messages) {
         this.ctx = ctx;
-        this.mensagens = mensagens;
+        this.messages = messages;
     }
 
     @Override
     public int getCount() {
-        return mensagens.size();
+        return messages.size();
     }
 
     @Override
-    public Mensagem getItem(int position) {
-        return mensagens.get(position);
+    public Message getItem(int position) {
+        return messages.get(position);
     }
 
     @Override
@@ -41,21 +41,21 @@ public class MensagemAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Mensagem msg = mensagens.get(position);
+        Message msg = messages.get(position);
 
         LayoutInflater vi = (LayoutInflater) ctx.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View v;
-        if (msg.tipo == Mensagem.RECEIVED) {
+        if (msg.type == Message.RECEIVED) {
             v = vi.inflate(R.layout.message_received, parent, false);
         } else {
-            v = vi.inflate(R.layout.message_sended, parent, false);
+            v = vi.inflate(R.layout.message_sent, parent, false);
         }
-        TextView tvMsg = (TextView) v.findViewById(R.id.tvMsg);
-        TextView tvNome = (TextView) v.findViewById(R.id.tvNome);
+        TextView tvMessage = (TextView) v.findViewById(R.id.tvMessage);
+        TextView tvName = (TextView) v.findViewById(R.id.tvName);
 
-        tvMsg.setText(msg.msg);
-        if (tvNome != null) {
-            tvNome.setText(msg.nome);
+        tvMessage.setText(msg.message);
+        if (tvName != null) {
+            tvName.setText(msg.name);
         }
 
         return v;

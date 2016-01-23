@@ -12,17 +12,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-
     }
 
     public void openChat(View v){
-        EditText edtPort = (EditText) findViewById(R.id.edtPorta);
-        EditText edtNome = (EditText) findViewById(R.id.edtNome);
+        EditText edtPort = (EditText) findViewById(R.id.edtPort);
+        EditText edtName = (EditText) findViewById(R.id.edtName);
         Intent i = new Intent(this, Chat.class);
         try {
-            i.putExtra("oi", "oi");
-            i.putExtra("nome", edtNome.getText().toString());
+            i.putExtra("name", edtName.getText().toString());
             i.putExtra("port", Integer.parseInt(edtPort.getText().toString()));
         } catch (Exception e){}
         startActivity(i);

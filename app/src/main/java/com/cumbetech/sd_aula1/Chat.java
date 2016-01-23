@@ -10,8 +10,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.cumbetech.sd_aula1.Adapters.MensagemAdapter;
-import com.cumbetech.sd_aula1.Objects.Mensagem;
+import com.cumbetech.sd_aula1.Adapters.MessageAdapter;
+import com.cumbetech.sd_aula1.Objects.Message;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -24,9 +24,9 @@ public class Chat extends AppCompatActivity {
     private DatagramSocket socket;
     private EditText edtIp, edtMsg, edtPort;
     private ListView lv;
-    private ArrayList<Mensagem> mensagens = new ArrayList<>();
-    private MensagemAdapter adapter;
-    private String nome = "Sem nome";
+    private ArrayList<Message> messages = new ArrayList<>();
+    private MessageAdapter adapter;
+    private String name = "No name";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,10 +40,10 @@ public class Chat extends AppCompatActivity {
 
     private void initialize() {
         edtIp = (EditText) findViewById(R.id.edtIp);
-        edtPort = (EditText) findViewById(R.id.edtPorta);
+        edtPort = (EditText) findViewById(R.id.edtPort);
         edtMsg = (EditText) findViewById(R.id.edtMsg);
         lv = (ListView) findViewById(R.id.lv);
-        adapter = new MensagemAdapter(this, mensagens);
+        adapter = new MessageAdapter(this, messages);
         lv.setAdapter(adapter);
         ((Button) findViewById(R.id.btnSend)).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,9 +52,9 @@ public class Chat extends AppCompatActivity {
             }
         });
         Intent i = getIntent();
-        if (i.hasExtra("nome")){
-            if (!i.getStringExtra("nome").isEmpty()) {
-                nome = i.getStringExtra("nome");
+        if (i.hasExtra("name")){
+            if (!i.getStringExtra("name").isEmpty()) {
+                name = i.getStringExtra("name");
             }
         }
     }
@@ -67,7 +67,7 @@ public class Chat extends AppCompatActivity {
         try {
             return Integer.parseInt(edtPort.getText().toString());
         } catch (Exception e) {
-            return 3000;
+            return 5000;
         }
     }
 
@@ -78,10 +78,10 @@ public class Chat extends AppCompatActivity {
 
     private void openSocket() {
         try {
-            int p = 3000;
+            int p = 5000;
             Intent i = getIntent();
             if (i.hasExtra("port")) {
-                p = i.getIntExtra("port", 3000);
+                p = i.getIntExtra("port", 5000);
             }
 
             final int port = p;
@@ -99,7 +99,7 @@ public class Chat extends AppCompatActivity {
                 protected Void doInBackground(Void... params) {
                     try {
                         while(true){
-                            byte[] buf = new byte[64];
+                            byte[] buf = new byte[512];
 
                             DatagramPacket pack = new DatagramPacket(buf, buf.length);
 
@@ -111,17 +111,17 @@ public class Chat extends AppCompatActivity {
                             Log.d(TAG, "Mensagem recebida: " + rec);
                             String[] recSplit = rec.split(";", 2);
 
-                            String nome = "Sem nome";
+                            String name = "No name";
                             String msg = "";
 
                             if (recSplit.length == 2) {
-                                nome = recSplit[0];
+                                name = recSplit[0];
                                 msg = recSplit[1];
                             } else {
                                 msg = recSplit[0];
                             }
 
-                            mensagens.add(new Mensagem(Mensagem.RECEIVED, nome, msg, addr));
+                            messages.add(new Message(Message.RECEIVED, name, msg, addr));
                         }
                     } catch (Exception e) {
                         Log.e(TAG, "Erro no socket: ", e);
@@ -152,11 +152,11 @@ public class Chat extends AppCompatActivity {
                 try {
                     String msg = getMessage().trim();
                     if (msg.length() > 0) {
-                        byte[] buf = (nome + ";" + msg).getBytes();
+                        byte[] buf = (name + ";" + msg).getBytes();
                         InetAddress ip = InetAddress.getByName(getIp());
                         DatagramPacket pack = new DatagramPacket(buf, buf.length, ip, getPort());
                         socket.send(pack);
-                        mensagens.add(new Mensagem(Mensagem.SENDED, nome, msg, null));
+                        messages.add(new Message(Message.SENDED, name, msg, null));
                     } else {
                         return false;
                     }

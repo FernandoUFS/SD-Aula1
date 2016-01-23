@@ -22,7 +22,7 @@
             android:text="Seu nome: " />
 
         <EditText
-            android:id="@+id/edtNome"
+            android:id="@+id/edtName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Android"
@@ -42,7 +42,7 @@
             android:text="Porta: " />
 
         <EditText
-            android:id="@+id/edtPorta"
+            android:id="@+id/edtPort"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="right"
