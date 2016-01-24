@@ -156,6 +156,7 @@ public class Chat extends AppCompatActivity {
                         InetAddress ip = InetAddress.getByName(getIp());
                         DatagramPacket pack = new DatagramPacket(buf, buf.length, ip, getPort());
                         socket.send(pack);
+                        //only github test
                         messages.add(new Message(Message.SENDED, name, msg, null));
                     } else {
                         return false;
