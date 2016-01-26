@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.cumbetech.sd_aula1.Adapters.MessageAdapter;
 import com.cumbetech.sd_aula1.Objects.Message;
@@ -23,17 +24,18 @@ public class Chat extends AppCompatActivity {
 
     private DatagramSocket socket;
     private EditText edtIp, edtMsg, edtPort;
+    private TextView nameLocal, nameRemote, ipLocal, ipRemote;
     private ListView lv;
     private ArrayList<Message> messages = new ArrayList<>();
     private MessageAdapter adapter;
     private String name = "No name";
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_p1);
-        //Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        //setSupportActionBar(toolbar);
+
         initialize();
         openSocket();
     }
@@ -43,9 +45,13 @@ public class Chat extends AppCompatActivity {
         edtPort = (EditText) findViewById(R.id.edtPort);
         edtMsg = (EditText) findViewById(R.id.edtMsg);
         lv = (ListView) findViewById(R.id.lv);
+        nameLocal = (TextView) findViewById(R.id.nameLocal);
+        nameRemote = (TextView) findViewById(R.id.nameRemote);
+        ipLocal = (TextView) findViewById(R.id.ipLocal);
+        ipRemote = (TextView) findViewById(R.id.ipRemote);
         adapter = new MessageAdapter(this, messages);
         lv.setAdapter(adapter);
-        ((Button) findViewById(R.id.btnSend)).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btnSend).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendMessage();
@@ -55,6 +61,8 @@ public class Chat extends AppCompatActivity {
         if (i.hasExtra("name")){
             if (!i.getStringExtra("name").isEmpty()) {
                 name = i.getStringExtra("name");
+                nameLocal.setText(name);
+                ipLocal.setText(Utils.getIp(this));
             }
         }
     }
@@ -88,11 +96,19 @@ public class Chat extends AppCompatActivity {
 
             socket = new DatagramSocket(port);
 
-            new AsyncTask<Void, Void, Void>(){
+            new AsyncTask<Void, Message, Void>(){
 
                 @Override
                 protected void onPostExecute(Void aVoid) {
                     adapter.notifyDataSetChanged();
+                }
+
+                @Override
+                protected void onProgressUpdate(Message... m) {
+                    adapter.notifyDataSetChanged();
+                    nameRemote.setText(m[0].name);
+                    ipRemote.setText(m[0].addr.getHostAddress());
+                    super.onProgressUpdate(m);
                 }
 
                 @Override
@@ -120,8 +136,9 @@ public class Chat extends AppCompatActivity {
                             } else {
                                 msg = recSplit[0];
                             }
-
-                            messages.add(new Message(Message.RECEIVED, name, msg, addr));
+                            Message m = new Message(Message.RECEIVED, name, msg, addr);
+                            messages.add(m);
+                            publishProgress(m);
                         }
                     } catch (Exception e) {
                         Log.e(TAG, "Erro no socket: ", e);
@@ -135,8 +152,6 @@ public class Chat extends AppCompatActivity {
     }
 
     public void sendMessage() {
-        adapter.notifyDataSetChanged();
-
         new AsyncTask<Void, Void, Boolean>() {
 
             @Override
@@ -156,15 +171,14 @@ public class Chat extends AppCompatActivity {
                         InetAddress ip = InetAddress.getByName(getIp());
                         DatagramPacket pack = new DatagramPacket(buf, buf.length, ip, getPort());
                         socket.send(pack);
-                        //only github test
                         messages.add(new Message(Message.SENDED, name, msg, null));
-                    } else {
+                    }
+                     else {
                         return false;
                     }
                 } catch (Exception e) {
                     Log.e(TAG, "Erro ao enviar socket: ", e);
                 }
-                int i = 0;
                 return true;
             }
         }.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

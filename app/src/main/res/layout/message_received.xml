@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_marginBottom="8dp"
-    android:layout_marginTop="8dp"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:gravity="right"
+    android:paddingBottom="8dp"
+    android:paddingTop="8dp">
 
     <LinearLayout
-        android:padding="12dp"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="80dp"
+        android:layout_gravity="right"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="8dp"
         android:background="#292929"
-        android:orientation="vertical">
+        android:gravity="right"
+        android:orientation="vertical"
+        android:padding="12dp">
 
         <TextView
             android:id="@+id/tvName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="right"
             android:layout_marginBottom="4dp"
             android:text="Fernando:"
             android:textColor="#808080" />
@@ -26,7 +31,8 @@
             android:id="@+id/tvMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sended message o leverkuzen ta fazendo gol na hora errada pqp perdi outra aposta."
+            android:gravity="right"
+            android:text="oi."
             android:textSize="16sp" />
 
     </LinearLayout>
