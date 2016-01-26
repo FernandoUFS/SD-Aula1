@@ -10,16 +10,87 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".Chat">
 
-    <ListView
-        android:dividerHeight="0dp"
-        android:divider="@null"
-        android:id="@+id/lv"
-        android:transcriptMode="alwaysScroll"
-        android:stackFromBottom="true"
+    <LinearLayout
         android:layout_width="match_parent"
+        android:layout_marginBottom="8dp"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginRight="6dp"
+            android:src="@drawable/ic_profile" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/nameLocal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:ems="3"
+                android:singleLine="true"
+                android:text="Nome" />
+
+            <TextView
+                android:id="@+id/ipLocal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="127.0.0.1"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginLeft="10dp"
+            android:layout_weight="1"
+            android:gravity="right"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/nameRemote"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="3"
+                android:gravity="right"
+                android:singleLine="true"
+                android:text="Waiting..." />
+
+            <TextView
+                android:id="@+id/ipRemote"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="0.0.0.0"
+                android:textSize="12sp" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="6dp"
+            android:src="@drawable/ic_profile" />
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_height="0dp">
-    </ListView>
+        android:divider="@null"
+        android:dividerHeight="0dp"
+        android:stackFromBottom="true"
+        android:transcriptMode="alwaysScroll"></ListView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -29,8 +100,8 @@
         <EditText
             android:id="@+id/edtMsg"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:hint="Mensagem" />
 
         <Button
@@ -58,9 +129,9 @@
             android:id="@+id/edtPort"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="5000"
             android:hint="porta"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:text="5000" />
 
     </LinearLayout>
 </LinearLayout>

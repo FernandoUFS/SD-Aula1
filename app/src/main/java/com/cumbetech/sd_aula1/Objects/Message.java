@@ -12,7 +12,7 @@ public class Message {
     public int type;
     public String message;
     public String name;
-    InetAddress addr;
+    public InetAddress addr;
 
     public Message(int type, String name, String message, InetAddress addr) {
         this.type = type;
